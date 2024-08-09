@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +33,9 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
+import com.epages.restdocs.apispec.ResourceDocumentation;
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.example.RestDocsSupport;
 import com.example.restdocsexample.board.domain.dto.SaveBoard;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,13 +84,21 @@ class BoardControllerTest {
         result
                 .andExpect(status().isCreated())
                 .andDo(
-                        restDocs.document(
-                                requestFields(
-                                        fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                                        fieldWithPath("content").type(JsonFieldType.STRING).description("내용")
-                                ),
-                                responseFields(
-                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("게시물 아이디")
+                        MockMvcRestDocumentationWrapper.document(
+                                "{class-name}/{method-name}",
+                                Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                                Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
+                                ResourceDocumentation.resource(
+                                        ResourceSnippetParameters.builder()
+                                                .description("게시물 저장")
+                                                .requestFields(
+                                                        PayloadDocumentation.fieldWithPath("title").description("게시글 제목"),
+                                                        PayloadDocumentation.fieldWithPath("content").description("게시글 내용")
+                                                )
+                                                .responseFields(
+                                                        PayloadDocumentation.fieldWithPath("id").description("게시글 ID")
+                                                )
+                                                .build()
                                 )
                         )
                 );

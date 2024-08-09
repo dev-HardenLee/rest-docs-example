@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.3.2'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
+	id 'com.epages.restdocs-api-spec' version "0.17.1"
 }
 
 group = 'com.example'
@@ -30,6 +31,14 @@ ext {
 	snippetsDir = file('build/generated-snippets')
 }
 
+openapi3 {
+  setServer("http://localhost:8080")
+  title = "restdocs-swagger API Documentation"
+  description = "Spring REST Docs with SwaggerUI."
+  version = "0.0.1"
+  format = "yaml"
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -40,6 +49,7 @@ dependencies {
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testImplementation "com.epages:restdocs-api-spec-mockmvc:0.17.1"
 
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

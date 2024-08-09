@@ -1,0 +1,19 @@
+= Spring Rest Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 6
+:sectlinks:
+
+
+= Board API
+=== /board
+
+.request
+include::{snippets}/board-controller-test/게시물_저장에_성공한다/http-request.adoc[]
+include::{snippets}/board-controller-test/게시물_저장에_성공한다/request-fields.adoc[]
+
+.response
+include::{snippets}/board-controller-test/게시물_저장에_성공한다/http-response.adoc[]
+include::{snippets}/board-controller-test/게시물_저장에_성공한다/response-fields.adoc[]
